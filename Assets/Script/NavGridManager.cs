@@ -23,6 +23,7 @@ public class NavGridManager : MonoBehaviour
     
     private NavGridCell[,] _grid;
 
+    public Vector2 GridOffset => _gridOffset;
     private void Awake() {
         Instance = this;
     }

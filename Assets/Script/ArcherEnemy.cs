@@ -10,7 +10,6 @@ public class ArcherEnemy : NavGridAgent
     
     [Space(10), Header("Attacks")] 
     [SerializeField] private int _attackDamage = 2;
-    //[SerializeField] private float _attackForcePower =10;
     [SerializeField] private float _attackTime =0.7f;
     [Range(0, 1), SerializeField] private float _deplayBeforeFirering = 0.5f;
     [SerializeField] private BezierProjectile _prfBezierProjectile;
@@ -19,8 +18,6 @@ public class ArcherEnemy : NavGridAgent
     [SerializeField] private Vector2 _leftProjecticleDirection;
     [SerializeField] private Vector2 _rightProjecticleSpawn;
     [SerializeField] private Vector2 _rightProjecticleDirection;
-    //[SerializeField] private Bounds _leftAttackBounds;
-    //[SerializeField] private Bounds _rightAttackBounds;
     [Header("Health")]
     [SerializeField] private int _health =4;
     [SerializeField] private GameObject _prfDeathParticule;
@@ -31,6 +28,11 @@ public class ArcherEnemy : NavGridAgent
     [Header("DamagedParameters")]
     [SerializeField] private float _damageTime = 0.75f;
     [SerializeField] private AnimationCurve _damageCurve = AnimationCurve.EaseInOut(0,0,1,1);
+    [Header("Flee Parameters")]
+    [SerializeField] private float _fleeTriggerDistance = 3f;
+    [SerializeField, Range(0, 1)] private float _fleeChance = 0.5f;
+    [SerializeField] private int _fleeDistance = 4;
+    
 
    
     
@@ -38,7 +40,7 @@ public class ArcherEnemy : NavGridAgent
     private bool _isTriggered = false;
     private EnnemiStat _ennemiStat;
     public enum EnnemiStat {
-        Idle, Walk, Attacking, Damaged
+        Idle, Walk, Attacking, Damaged, Fleeing
     }
     private PopoteTimer _wonderingTimer;
     private PopoteTimer _attackTimer;
@@ -63,6 +65,7 @@ public class ArcherEnemy : NavGridAgent
             case EnnemiStat.Walk: ManageWalkState(); break;
             case EnnemiStat.Attacking: ManageAttackState();break;
             case EnnemiStat.Damaged: ManagerDamaged(); break;
+            case EnnemiStat.Fleeing: ManageFleeState(); break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
@@ -78,7 +81,7 @@ public class ArcherEnemy : NavGridAgent
 
     
     private void ChangStatToIdle() {
-        Debug.Log("Idle");
+        //Debug.Log("Idle");
         _wonderingTimer.Play(Random.Range(_minWaitTime, _maxWaitTime));
         _ennemiStat = EnnemiStat.Idle;
     }
@@ -101,7 +104,7 @@ public class ArcherEnemy : NavGridAgent
     }
 
     private void ManageWalkState() {
-        Debug.Log("Walk");
+        //Debug.Log("Walk");
         ManageLocomotion();
         if( !_isTriggered)CheckIfPlayerInAgroRange();
         else ManageChase();
@@ -155,9 +158,9 @@ public class ArcherEnemy : NavGridAgent
     #endregion
     #region Attack
     
-    private void CheckIfPlayerInAttackRange()
-    {
-        Debug.Log("DoAttack");
+    private void CheckIfPlayerInAttackRange() {
+        if( CheckIfHaveToFlee())return;
+        //Debug.Log("DoAttack");
         if (Vector2.Distance(StaticData.PlayerPos, transform.position) <= _attackTriggerRange) {
             _rb.linearVelocity = Vector2.zero;
             _spriteRenderer.flipX = (StaticData.PlayerPos.x- transform.position.x)<0;
@@ -169,6 +172,7 @@ public class ArcherEnemy : NavGridAgent
 
     private void ManageAttackState() {
         _attackTimer.UpdateTimer();
+        _animator.SetBool("IsWalking",false);
         if (_haveAttacked)return;
         if (_attackTimer.T > _deplayBeforeFirering) {
             if( _spriteRenderer.flipX)SpawnProjectile( (Vector2)transform.position+_rightProjecticleSpawn,(Vector2)transform.position+_rightProjecticleDirection);
@@ -200,6 +204,37 @@ public class ArcherEnemy : NavGridAgent
         Debug.Log("Finish attack");
         _haveAttacked = false;
         ChangStatToIdle();
+    }
+
+    #endregion
+
+    #region  Fleeing
+
+    private bool CheckIfHaveToFlee() {
+        if (Vector2.Distance(StaticData.PlayerPos, transform.position) > _fleeTriggerDistance)  return false;
+        if (Random.Range(0, 1) > _fleeChance)  return false;
+        NavGridCell[] cells =_gridManager.GetBFS(_gridManager.GetCell(transform.position),_fleeDistance);
+        SetNewDestination(_gridManager.GetCenterWorldPos(GetFarestCell(cells, StaticData.PlayerPos)));
+        _ennemiStat = EnnemiStat.Fleeing;
+        return true;
+    }
+
+   private NavGridCell GetFarestCell(NavGridCell[] cells, Vector2 worldPos) {
+       Vector2 refPos = worldPos-_gridManager.GridOffset;
+       NavGridCell bestCell = cells[0];
+
+       foreach (var cell in cells) {
+           if (Vector2.Distance(cell.Pos, refPos) > Vector2.Distance(refPos, bestCell.Pos))
+           {
+               bestCell = cell;
+           }
+       }
+       return bestCell;
+   }
+
+    private void ManageFleeState() {
+        ManageLocomotion();
+        ManagerVisual();
     }
 
     #endregion

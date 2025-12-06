@@ -80,6 +80,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _damageRayLength: 0.5
 --- !u!212 &548848922531454843
 SpriteRenderer:
   m_ObjectHideFlags: 0
