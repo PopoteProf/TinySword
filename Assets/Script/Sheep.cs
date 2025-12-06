@@ -46,7 +46,7 @@ public class Sheep : NavGridAgent
 
     private void ManagerDamaged()
     {
-        Debug.Log("ManagerDamaged with T ="+_damagedTimer.T);
+        //Debug.Log("ManagerDamaged with T ="+_damagedTimer.T);
         _spriteRenderer.material.SetFloat("_HitProgress", _damageCurve.Evaluate(_damagedTimer.T));
     }
 
