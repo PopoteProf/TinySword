@@ -1,11 +1,8 @@
-﻿
-
-using System;
-using Unity.Cinemachine;
+﻿using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Ennemi : NavGridAgent
+public class ArcherEnemy : NavGridAgent 
 {
     [SerializeField] private float _aggresionRange = 6;
     [SerializeField] private float _chaseRangeRecalculPath = 1.5f;
@@ -13,11 +10,14 @@ public class Ennemi : NavGridAgent
     
     [Space(10), Header("Attacks")] 
     [SerializeField] private int _attackDamage = 2;
-    [SerializeField] private float _attackForcePower =10;
     [SerializeField] private float _attackTime =0.7f;
-    [Range(0, 1), SerializeField] private float _deplayBeforeDamage = 0.5f;
-    [SerializeField] private Bounds _leftAttackBounds;
-    [SerializeField] private Bounds _rightAttackBounds;
+    [Range(0, 1), SerializeField] private float _deplayBeforeFirering = 0.5f;
+    [SerializeField] private BezierProjectile _prfBezierProjectile;
+
+    [SerializeField] private Vector2 _leftProjecticleSpawn;
+    [SerializeField] private Vector2 _leftProjecticleDirection;
+    [SerializeField] private Vector2 _rightProjecticleSpawn;
+    [SerializeField] private Vector2 _rightProjecticleDirection;
     [Header("Health")]
     [SerializeField] private int _health =4;
     [SerializeField] private GameObject _prfDeathParticule;
@@ -28,6 +28,11 @@ public class Ennemi : NavGridAgent
     [Header("DamagedParameters")]
     [SerializeField] private float _damageTime = 0.75f;
     [SerializeField] private AnimationCurve _damageCurve = AnimationCurve.EaseInOut(0,0,1,1);
+    [Header("Flee Parameters")]
+    [SerializeField] private float _fleeTriggerDistance = 3f;
+    [SerializeField, Range(0, 1)] private float _fleeChance = 0.5f;
+    [SerializeField] private int _fleeDistance = 4;
+    
 
    
     
@@ -35,7 +40,7 @@ public class Ennemi : NavGridAgent
     private bool _isTriggered = false;
     private EnnemiStat _ennemiStat;
     public enum EnnemiStat {
-        Idle, Walk, Attacking, Damaged
+        Idle, Walk, Attacking, Damaged, Fleeing
     }
     private PopoteTimer _wonderingTimer;
     private PopoteTimer _attackTimer;
@@ -60,6 +65,7 @@ public class Ennemi : NavGridAgent
             case EnnemiStat.Walk: ManageWalkState(); break;
             case EnnemiStat.Attacking: ManageAttackState();break;
             case EnnemiStat.Damaged: ManagerDamaged(); break;
+            case EnnemiStat.Fleeing: ManageFleeState(); break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
@@ -75,7 +81,7 @@ public class Ennemi : NavGridAgent
 
     
     private void ChangStatToIdle() {
-        Debug.Log("Idle");
+        //Debug.Log("Idle");
         _wonderingTimer.Play(Random.Range(_minWaitTime, _maxWaitTime));
         _ennemiStat = EnnemiStat.Idle;
     }
@@ -98,7 +104,7 @@ public class Ennemi : NavGridAgent
     }
 
     private void ManageWalkState() {
-        Debug.Log("Walk");
+        //Debug.Log("Walk");
         ManageLocomotion();
         if( !_isTriggered)CheckIfPlayerInAgroRange();
         else ManageChase();
@@ -152,8 +158,8 @@ public class Ennemi : NavGridAgent
     #endregion
     #region Attack
     
-    private void CheckIfPlayerInAttackRange()
-    {
+    private void CheckIfPlayerInAttackRange() {
+        if( CheckIfHaveToFlee())return;
         //Debug.Log("DoAttack");
         if (Vector2.Distance(StaticData.PlayerPos, transform.position) <= _attackTriggerRange) {
             _rb.linearVelocity = Vector2.zero;
@@ -166,24 +172,33 @@ public class Ennemi : NavGridAgent
 
     private void ManageAttackState() {
         _attackTimer.UpdateTimer();
+        _animator.SetBool("IsWalking",false);
         if (_haveAttacked)return;
-        if (_attackTimer.T > _deplayBeforeDamage) {
+        if (_attackTimer.T > _deplayBeforeFirering) {
+            if( _spriteRenderer.flipX)SpawnProjectile( (Vector2)transform.position+_rightProjecticleSpawn,(Vector2)transform.position+_rightProjecticleDirection);
+            else SpawnProjectile((Vector2)transform.position+_leftProjecticleSpawn, (Vector2)transform.position+_leftProjecticleDirection);
             _haveAttacked = true;
-            if( _spriteRenderer.flipX)MakeDamage(_rightAttackBounds);
-            else MakeDamage(_leftAttackBounds);
+            
         }
     }
-    private void MakeDamage(Bounds bound) {
-        RaycastHit2D[] hit2Ds= Physics2D.BoxCastAll(transform.position + bound.center, bound.size, 0, Vector2.zero);
-        foreach (var hit in hit2Ds) {
-            if (hit.collider.gameObject == gameObject) continue;
-            if (hit.collider.GetComponent<IDamagable>()!=null) {
-                Vector2 dir = hit.collider.transform.position - transform.position;
-                dir.Normalize();
-                hit.collider.GetComponent<IDamagable>().TakeDamage(_attackDamage,dir*_attackForcePower, IDamagable.AttackerType.Player );
-            }
-        }
+
+    private void SpawnProjectile(Vector2 startPos, Vector2 direction)
+    {
+        BezierProjectile projectile = Instantiate(_prfBezierProjectile,  startPos, Quaternion.identity);
+        projectile.SetUpBezierProjectile(startPos,direction, StaticData.PlayerPos);
+            
     }
+    //private void MakeDamage(Bounds bound) {
+    //    RaycastHit2D[] hit2Ds= Physics2D.BoxCastAll(transform.position + bound.center, bound.size, 0, Vector2.zero);
+    //    foreach (var hit in hit2Ds) {
+    //        if (hit.collider.gameObject == gameObject) continue;
+    //        if (hit.collider.GetComponent<IDamagable>()!=null) {
+    //            Vector2 dir = hit.collider.transform.position - transform.position;
+    //            dir.Normalize();
+    //            hit.collider.GetComponent<IDamagable>().TakeDamage(_attackDamage,dir*_attackForcePower, IDamagable.AttackerType.Player );
+    //        }
+    //    }
+    //}
     private void OnTimerAttackEnd(object sender, EventArgs e)
     {
         Debug.Log("Finish attack");
@@ -192,14 +207,49 @@ public class Ennemi : NavGridAgent
     }
 
     #endregion
+
+    #region  Fleeing
+
+    private bool CheckIfHaveToFlee() {
+        if (Vector2.Distance(StaticData.PlayerPos, transform.position) > _fleeTriggerDistance)  return false;
+        if (Random.Range(0, 1) > _fleeChance)  return false;
+        NavGridCell[] cells =_gridManager.GetBFS(_gridManager.GetCell(transform.position),_fleeDistance);
+        SetNewDestination(_gridManager.GetCenterWorldPos(GetFarestCell(cells, StaticData.PlayerPos)));
+        _ennemiStat = EnnemiStat.Fleeing;
+        return true;
+    }
+
+   private NavGridCell GetFarestCell(NavGridCell[] cells, Vector2 worldPos) {
+       Vector2 refPos = worldPos-_gridManager.GridOffset;
+       NavGridCell bestCell = cells[0];
+
+       foreach (var cell in cells) {
+           if (Vector2.Distance(cell.Pos, refPos) > Vector2.Distance(refPos, bestCell.Pos))
+           {
+               bestCell = cell;
+           }
+       }
+       return bestCell;
+   }
+
+    private void ManageFleeState() {
+        ManageLocomotion();
+        ManagerVisual();
+    }
+
+    #endregion
     protected override void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _aggresionRange);
         Gizmos.DrawWireSphere(transform.position, _attackTriggerRange);
-        Gizmos.DrawWireCube(transform.position+ _leftAttackBounds.center, _leftAttackBounds.size);
-        Gizmos.DrawWireCube(transform.position+ _rightAttackBounds.center, _rightAttackBounds.size);
+        Gizmos.DrawSphere((Vector2)transform.position+ _rightProjecticleSpawn,0.05f );
+        Gizmos.DrawLine((Vector2)transform.position+ _rightProjecticleSpawn, (Vector2)transform.position+ _rightProjecticleSpawn+_rightProjecticleDirection);
+        Gizmos.DrawSphere((Vector2)transform.position+ _leftProjecticleSpawn,0.05f );
+        Gizmos.DrawLine((Vector2)transform.position+ _leftProjecticleSpawn, (Vector2)transform.position+ _leftProjecticleSpawn+_leftProjecticleDirection);
+        //Gizmos.DrawWireCube(transform.position+ _leftAttackBounds.center, _leftAttackBounds.size);
+        //Gizmos.DrawWireCube(transform.position+ _rightAttackBounds.center, _rightAttackBounds.size);
         
         base.OnDrawGizmos();
-    }
+    } 
 }
