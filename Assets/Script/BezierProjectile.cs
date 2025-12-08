@@ -6,6 +6,7 @@ public class BezierProjectile : MonoBehaviour
     [SerializeField] private float _projectileSpeed =2;
     [SerializeField] private AnimationCurve _sizeOverLifeTime = AnimationCurve.Linear(0, 0, 1, 1);
     [SerializeField] private float _damageRayLength = 0.3f;
+    [SerializeField] private GameObject _prfProjectilePrefab;
     private Vector2 _startPos;
     private Vector2 _starDirection;
     private Vector2 _endPos;
@@ -26,6 +27,7 @@ public class BezierProjectile : MonoBehaviour
         }
 
     private void OnTimerEnd(object sender, EventArgs e) {
+        Instantiate(_prfProjectilePrefab, transform.position, transform.rotation);
         Destroy(gameObject);
     }
 
