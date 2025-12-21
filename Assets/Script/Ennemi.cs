@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 public class Ennemi : NavGridAgent
 {
     [SerializeField] private float _aggresionRange = 6;
+    [SerializeField] private float _maxAggressionRange = 12;
     [SerializeField] private float _chaseRangeRecalculPath = 1.5f;
     [SerializeField] private float _attackTriggerRange = 1.3f;
     
@@ -66,10 +67,13 @@ public class Ennemi : NavGridAgent
     }
 
     private void CheckIfPlayerInAgroRange() {
+        if (IsFallBack) return;
         if (Vector2.Distance(StaticData.PlayerPos, transform.position) <= _aggresionRange) {
             _isTriggered = true;
             SetNewDestination(StaticData.PlayerPos);
         }
+
+        
     }
     #region Idle
 
@@ -108,11 +112,22 @@ public class Ennemi : NavGridAgent
 
     protected override void OnStopWalking() {
         if (_attackTimer.IsPlaying) return;
+        if (_isFallBack) _isFallBack = false;
         ChangStatToIdle();
     }
 
     private void ManageChase()
     {
+        if( IsFallBack) return;
+        if (Vector2.Distance(StaticData.PlayerPos, transform.position) >= _maxAggressionRange) {
+            _isTriggered = false;
+            if( _agentControlZone!=null) OrderToFallBack(_agentControlZone.GetReturnPos());
+            else {
+                ChangStatToIdle();
+                
+            }
+            return;
+        }
         if (Vector2.Distance(_targetPosition, transform.position) > _chaseRangeRecalculPath) {
             SetNewDestination(StaticData.PlayerPos);
         }
@@ -192,14 +207,15 @@ public class Ennemi : NavGridAgent
     }
 
     #endregion
-    protected override void OnDrawGizmos()
+    protected override void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _aggresionRange);
         Gizmos.DrawWireSphere(transform.position, _attackTriggerRange);
+        Gizmos.DrawWireSphere(transform.position, _maxAggressionRange);
         Gizmos.DrawWireCube(transform.position+ _leftAttackBounds.center, _leftAttackBounds.size);
         Gizmos.DrawWireCube(transform.position+ _rightAttackBounds.center, _rightAttackBounds.size);
         
-        base.OnDrawGizmos();
+        base.OnDrawGizmosSelected();
     }
 }

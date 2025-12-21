@@ -23,6 +23,7 @@ public class ArrowInGround : MonoBehaviour
         _postAnimationTimer.OnTimerEnd+= OnPostAnimTimerEnd;
         
         _animationTimer.Play();
+        _zRotPos = transform.eulerAngles.z;
     }
 
     private void OnAnimationTimerEnd(object sender, EventArgs e) {

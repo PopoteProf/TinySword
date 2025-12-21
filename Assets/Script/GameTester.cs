@@ -94,5 +94,4 @@ public class GameTester : MonoBehaviour
             _endCell = null;
         }
     }
-    
 }

@@ -81,6 +81,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _damageRayLength: 0.5
+  _prfProjectilePrefab: {fileID: 2225923170039072574, guid: a1165f664c641e34fbc1f2613637bd3f, type: 3}
 --- !u!212 &548848922531454843
 SpriteRenderer:
   m_ObjectHideFlags: 0

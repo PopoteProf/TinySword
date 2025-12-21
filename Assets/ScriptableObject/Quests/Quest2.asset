@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 817028cbafcf4975b028e5ea735b5899, type: 3}
+  m_Name: Quest2
+  m_EditorClassIdentifier: 
+  _triggers:
+  - TriggerID: 2
+    IsTriggered: 1
+  CompletID: 3
+  QuestTitle: "Aid\xE9 les fermier"
+  QuestDescription: Je dois aller voir les fermier a l'Ouest du village.

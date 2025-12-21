@@ -4,30 +4,33 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerController : MonoBehaviour ,IDamagable
-{
-    //public static PlayerController Instance;
-    
-    [SerializeField] private float _moveSpeed =100;
+public class PlayerController : MonoBehaviour, IDamagable {
+    [SerializeField] private PlayerInteractor _playerInteractor;
+    [Space(5)]
+    [SerializeField] private bool _controlBlock;
+    [SerializeField] private float _moveSpeed = 100;
     [SerializeField] private float _maxMoveSpeed = 2.5f;
     [SerializeField] private Animator _animator;
     [SerializeField] private SpriteRenderer _spriteRenderer;
-    [Header("Health")]
-    [SerializeField] private int _health =4;
+    [Header("Health")] [SerializeField] private int _health = 4;
+    [SerializeField] private int _maxHealt = 4;
     [SerializeField] private GameObject _prfDeathParticule;
 
-    [Space(10), Header("Attacks")] 
-    [SerializeField] private int _attackDamage = 2;
-    [SerializeField] private float _attackForcePower =10;
-    [SerializeField] private float _attackTime =0.3f;
+    [Space(10), Header("Attacks")] [SerializeField]
+    private int _attackDamage = 2;
+
+    [SerializeField] private float _attackForcePower = 10;
+    [SerializeField] private float _attackTime = 0.3f;
     [SerializeField] private Bounds _leftAttackBounds;
     [SerializeField] private Bounds _rightAttackBounds;
-    [Header("DamagedParameters")]
-    [SerializeField] private float _damageTime = 0.75f;
-    [SerializeField] private AnimationCurve _damageCurve = AnimationCurve.EaseInOut(0,0,1,1);
+
+    [Header("DamagedParameters")] [SerializeField]
+    private float _damageTime = 0.75f;
+
+    [SerializeField] private AnimationCurve _damageCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     [SerializeField] private CinemachineImpulseSource _attackImpulceSource;
     [SerializeField] private CinemachineImpulseSource _damagedImpulceSource;
-    
+
     private Rigidbody2D _rb;
     private InputAction _moveAction;
     private InputAction _attackAction;
@@ -43,32 +46,60 @@ public class PlayerController : MonoBehaviour ,IDamagable
 
     private enum PlayerAttackStat
     {
-        None, Attack1, Attack2
+        None,
+        Attack1,
+        Attack2
     }
 
-    public bool IsAttacking {
+    public bool IsAttacking
+    {
         get => _playerAttackStat != PlayerAttackStat.None;
     }
 
-    private void Awake() {
-        
+    public float NormalizeHealth {
+        get =>(float)_health/_maxHealt;
     }
 
+    private void Awake() {
+        StaticData.StartPlayingDialogue+= StartPlayingDialogue;
+        StaticData.EndPlayingDialogue+= EndPlayingDialogue;
+    }
+
+    private void OnDestroy() {
+        StaticData.StartPlayingDialogue-= StartPlayingDialogue;
+        StaticData.EndPlayingDialogue-= EndPlayingDialogue;
+    }
+
+    private void EndPlayingDialogue() {
+       Invoke("SetPlayerControlBlockToFalse", 0.1f);
+    }
+
+    private void StartPlayingDialogue(SO_DialogueData obj) =>  SetPlayerControlBlock(true);
     private void Start() {
         _rb = GetComponent<Rigidbody2D>();
         _moveAction =InputSystem.actions.FindAction("Move");
         _attackAction = InputSystem.actions.FindAction("Attack");
         _attackAction.started+= AttackActionOnstarted;
         _interactAction = InputSystem.actions.FindAction("Interact");
+        _interactAction.started+= InteractActionOnstarted;
         _attackTimer = new PopoteTimer(_attackTime);
         _attackTimer.OnTimerEnd+= OnAttackTimerEnd;
         _damagedTimer = new PopoteTimer(_damageTime);
+        
+        
+        StaticData.PlayerHealthChanged.Invoke(NormalizeHealth);
     }
 
     
 
+    private void SetPlayerControlBlockToFalse() => SetPlayerControlBlock(false);
+    public void SetPlayerControlBlock(bool controlBlock) {
+        _controlBlock = controlBlock;
+        _playerInteractor.SetCanInteract(!controlBlock);
+    }
+    
     private void AttackActionOnstarted(InputAction.CallbackContext obj) {
-        
+        if (_controlBlock) return;
         if( _attackTimer.IsPlaying) {
             if (_playerAttackStat == PlayerAttackStat.Attack1) _attack2Buffer = true;
             if (_playerAttackStat == PlayerAttackStat.Attack2) _attack1Buffer = true;
@@ -122,8 +153,15 @@ public class PlayerController : MonoBehaviour ,IDamagable
             ManagerDamaged();
             return;
         }
-        if (!IsAttacking)ManageMovement();
+
+        if (!IsAttacking && !_controlBlock) {
+            ManageMovement();
+        }
         ManagerVisual();
+    }
+    private void InteractActionOnstarted(InputAction.CallbackContext obj) {
+        if (IsAttacking || _controlBlock) return;
+        _playerInteractor.Interact();
     }
 
     private void ManageMovement() {
@@ -153,6 +191,7 @@ public class PlayerController : MonoBehaviour ,IDamagable
         _rb.AddForce(direction, ForceMode2D.Force);
         _damagedTimer.Play();
         _health -= damage;
+        StaticData.PlayerHealthChanged.Invoke(NormalizeHealth);
         if (_health <= 0) Die();
     }
     private void ManagerDamaged() {
@@ -162,5 +201,10 @@ public class PlayerController : MonoBehaviour ,IDamagable
     private void Die(){
         Instantiate(_prfDeathParticule, transform.position, Quaternion.identity);
         Destroy(gameObject);
+    }
+
+    public void HealPlayer(int healAmount) {
+        _health = Mathf.Clamp(_health+healAmount,0,_maxHealt );
+        StaticData.PlayerHealthChanged.Invoke(NormalizeHealth);
     }
 }

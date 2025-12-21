@@ -27,7 +27,8 @@ public class BezierProjectile : MonoBehaviour
         }
 
     private void OnTimerEnd(object sender, EventArgs e) {
-        Instantiate(_prfProjectilePrefab, transform.position, transform.rotation);
+        GameObject go = Instantiate(_prfProjectilePrefab, transform.position, transform.rotation);
+        go.transform.right = transform.right;
         Destroy(gameObject);
     }
 

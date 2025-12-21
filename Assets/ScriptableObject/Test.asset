@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a997a3ddc46942518bdbcedcc64a792c, type: 3}
+  m_Name: Test
+  m_EditorClassIdentifier: 
+  test: 
+  Triggers:
+  - IsTriggered: 0
+    TriggerDescription: 
+  - IsTriggered: 0
+    TriggerDescription: Talk to the Town Gard
+  - IsTriggered: 0
+    TriggerDescription: Talk to the monke for the first time
+  - IsTriggered: 0
+    TriggerDescription: Tallk to the farmers
+  - IsTriggered: 0
+    TriggerDescription: ' Talk to the Monk for the second time'
+  Quests:
+  - {fileID: 11400000, guid: 8b2fa78ee2183b149991f2539626490c, type: 2}
+  - {fileID: 11400000, guid: d136053a4ab1be44caeac7e8cec1fb4c, type: 2}
