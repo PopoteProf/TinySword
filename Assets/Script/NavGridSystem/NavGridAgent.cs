@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
@@ -6,6 +7,9 @@ using Random = UnityEngine.Random;
 public class NavGridAgent : MonoBehaviour ,IDamagable
 {
 
+
+    public Action<NavGridAgent> OnKill;
+    
     [SerializeField] private float _moveSpeedForce = 5;
     [SerializeField] private float _moveSpeedMax = 5;
     [SerializeField] private float _rangeToNextCell = 0.4f;
@@ -24,6 +28,7 @@ public class NavGridAgent : MonoBehaviour ,IDamagable
     protected bool _isMoving = false;
     protected bool _isFallBack;
     protected AgentControlZone _agentControlZone;
+    
     
     public bool IsFallBack => _isFallBack;
     public void SetAgentControlZone(AgentControlZone agentControlZone) => _agentControlZone = agentControlZone;
@@ -129,6 +134,7 @@ public class NavGridAgent : MonoBehaviour ,IDamagable
         }
     }
 
+    
     public virtual void TakeDamage(int damage, Vector2 direction, IDamagable.AttackerType attackerType) { }
     protected virtual void OnStartWalking() { }
     protected virtual void OnStopWalking() { }

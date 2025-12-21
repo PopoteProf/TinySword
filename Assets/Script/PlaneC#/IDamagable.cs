@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public interface IDamagable
 {
+    
     public enum AttackerType {
         Player, Enemy, Explosive
     }

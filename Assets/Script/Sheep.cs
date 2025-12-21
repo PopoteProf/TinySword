@@ -60,6 +60,7 @@ public class Sheep : NavGridAgent
     }
     
     private void Die(){
+        OnKill?.Invoke(this);
        Instantiate(_prfDeathParticule, transform.position, Quaternion.identity);
        Destroy(gameObject);
     }

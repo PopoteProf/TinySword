@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour, IDamagable {
+    
+    public Action<IDamagable> OnKill { get; }
+    
     [SerializeField] private PlayerInteractor _playerInteractor;
     [Space(5)]
     [SerializeField] private bool _controlBlock;
@@ -184,6 +187,8 @@ public class PlayerController : MonoBehaviour, IDamagable {
         Gizmos.DrawWireCube(transform.position+ _leftAttackBounds.center, _leftAttackBounds.size);
         Gizmos.DrawWireCube(transform.position+ _rightAttackBounds.center, _rightAttackBounds.size);
     }
+
+    
 
     public void TakeDamage(int damage, Vector2 direction, IDamagable.AttackerType attackerType)
     {

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 817028cbafcf4975b028e5ea735b5899, type: 3}
   m_Name: TestQuest
   m_EditorClassIdentifier: 
-  _triggers:
-  - TriggerID: 0
-    IsTriggered: 0
+  Triggers:
+  - TriggerID: 1
+    IsTriggered: 1
   CompletID: 4
   QuestTitle: "R\xE9soudre le probl\xE8me du pere turbateur"
   QuestDescription: "Je viens d'ariv\xE9 au village et je doi said\xE9 le pere turbateur

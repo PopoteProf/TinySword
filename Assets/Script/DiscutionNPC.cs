@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 
 public class DiscutionNPC : MonoBehaviour, IInteractable
@@ -67,4 +68,6 @@ public class DiscutionNPC : MonoBehaviour, IInteractable
         _QuestUI.SetActive(_currenDialoguedata.IsQuest);
         
     }
+
+   
 }

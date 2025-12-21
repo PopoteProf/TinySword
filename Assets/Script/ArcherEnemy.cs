@@ -168,6 +168,7 @@ public class ArcherEnemy : NavGridAgent
     }
     
     private void Die(){
+        OnKill?.Invoke(this);
         Instantiate(_prfDeathParticule, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }

@@ -7,6 +7,8 @@ using Random = UnityEngine.Random;
 
 public class Ennemi : NavGridAgent
 {
+    
+    
     [SerializeField] private float _aggresionRange = 6;
     [SerializeField] private float _maxAggressionRange = 12;
     [SerializeField] private float _chaseRangeRecalculPath = 1.5f;
@@ -162,6 +164,7 @@ public class Ennemi : NavGridAgent
     
     private void Die(){
         Instantiate(_prfDeathParticule, transform.position, Quaternion.identity);
+        OnKill?.Invoke(this);
         Destroy(gameObject);
     }
     #endregion

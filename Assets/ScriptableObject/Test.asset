@@ -24,6 +24,13 @@ MonoBehaviour:
     TriggerDescription: Tallk to the farmers
   - IsTriggered: 0
     TriggerDescription: ' Talk to the Monk for the second time'
+  - IsTriggered: 0
+    TriggerDescription: 'Talk to the NorthGard '
+  - IsTriggered: 0
+    TriggerDescription: Kill the Goblines
+  - IsTriggered: 0
+    TriggerDescription: EndKill Goblins Quest
   Quests:
   - {fileID: 11400000, guid: 8b2fa78ee2183b149991f2539626490c, type: 2}
   - {fileID: 11400000, guid: d136053a4ab1be44caeac7e8cec1fb4c, type: 2}
+  - {fileID: 11400000, guid: 9b998e46bf2b28747a5a621775b73185, type: 2}

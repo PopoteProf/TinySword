@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 817028cbafcf4975b028e5ea735b5899, type: 3}
   m_Name: Quest2
   m_EditorClassIdentifier: 
-  _triggers:
+  Triggers:
   - TriggerID: 2
     IsTriggered: 1
   CompletID: 3

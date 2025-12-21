@@ -8,6 +8,7 @@ public static class TriggerAndQuest {
     
     private static SOTriggerIdsAndQuest _soTriggerAndQuest;
     private static bool[] _triggers;
+    public static SOTriggerIdsAndQuest SoTriggerIdsAndQuest => _soTriggerAndQuest;
 
     public static void SetUpSOTriggerIdsAndQuest(SOTriggerIdsAndQuest soTriggerIdsAndQuest) { 
         _soTriggerAndQuest = soTriggerIdsAndQuest;
