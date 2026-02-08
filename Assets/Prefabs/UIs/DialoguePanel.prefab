@@ -321,11 +321,118 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a5700ff2aef1234b83c4ea3167119fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _holderPanel: {fileID: 2615233460109323584}
+  _holderPanel: {fileID: 3766875554289718450}
   _txtHeader: {fileID: 4432414857414010955}
   _txtDialogue: {fileID: 5843526879506864442}
-  _charcterPerSecond: 10
+  _charcterPerSecond: 50
   _currentDialogueData: {fileID: 0}
+  _openningAnimationTime: 0.5
+  _openingPivotanimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1.8625597
+      outSlope: 1.8625597
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.27538666
+    - serializedVersion: 3
+      time: 0.5683731
+      value: 1.0956849
+      inSlope: 1.366266
+      outSlope: 1.366266
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.6465248
+    - serializedVersion: 3
+      time: 0.6648687
+      value: 1.050245
+      inSlope: -3.743825
+      outSlope: -3.743825
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.1627045
+    - serializedVersion: 3
+      time: 0.89628404
+      value: 1.026718
+      inSlope: -1.8613244
+      outSlope: -1.8613244
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.48145387
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _closeningAnimationTime: 0.25
+  _closingPivotanimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _audioOnOpen:
+    AudioClips:
+    - {fileID: 8300000, guid: 78ad99fd0a0a5144280b07bbdba84815, type: 3}
+    - {fileID: 8300000, guid: b83bf8726a7fac349a54389f0c57cda6, type: 3}
+    Volume: 0.75
+    UsRandomPitch: 0
+    MinPitch: 0.9
+    MaxPitch: 1.1
+  _audioOnClose:
+    AudioClips:
+    - {fileID: 8300000, guid: 78ad99fd0a0a5144280b07bbdba84815, type: 3}
+    - {fileID: 8300000, guid: e58d8bd078f188a4ba314e933b98528b, type: 3}
+    Volume: 0.75
+    UsRandomPitch: 0
+    MinPitch: 0.9
+    MaxPitch: 1.1
+  _audioNextDialogue:
+    AudioClips:
+    - {fileID: 8300000, guid: 78ad99fd0a0a5144280b07bbdba84815, type: 3}
+    Volume: 0.75
+    UsRandomPitch: 0
+    MinPitch: 0.9
+    MaxPitch: 1.1
+  _audioLettreDisplay:
+    AudioClips:
+    - {fileID: 8300000, guid: 023ea3ddeaa8dd146b7633a0800e5a0e, type: 3}
+    Volume: 0.75
+    UsRandomPitch: 1
+    MinPitch: 0.9
+    MaxPitch: 1.1
 --- !u!1 &2546002611676134410
 GameObject:
   m_ObjectHideFlags: 0
@@ -440,7 +547,7 @@ RectTransform:
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 150}
   m_SizeDelta: {x: 800, y: 300}
-  m_Pivot: {x: 0.5, y: 0}
+  m_Pivot: {x: 0.5, y: 2.66}
 --- !u!222 &2547708623655177336
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -515,7 +622,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -29.999945}
+  m_AnchoredPosition: {x: 0, y: -29.999756}
   m_SizeDelta: {x: -40, y: -120.00011}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2111151227023018622

@@ -143,6 +143,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9077993689175992535}
+  - {fileID: 1575974422869552164}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2230682166529452257
@@ -287,3 +288,72 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!1 &8080411657015308444
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1575974422869552164}
+  - component: {fileID: 3484020817920747654}
+  m_Layer: 0
+  m_Name: AudioPart
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1575974422869552164
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8080411657015308444}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6079194025923037309}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3484020817920747654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8080411657015308444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fa7cad7d5b4450b9e6c848167a979fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _NavGridAgent: {fileID: 2230682166529452257}
+  _targetRender: {fileID: 1254701616684477048}
+  _sfxAudioMixer: {fileID: -8239953488597329077, guid: 6b0ec3a830be9c747bc0ed5e70771e90, type: 2}
+  _damaged:
+    AudioClips:
+    - {fileID: 8300000, guid: 8b23b175a78d6b5458322e3a6c9905d0, type: 3}
+    Volume: 0.75
+    UsRandomPitch: 1
+    MinPitch: 0.9
+    MaxPitch: 1.1
+  _kill:
+    AudioClips:
+    - {fileID: 8300000, guid: 566d2ea6240b489479a6e9fd608c2621, type: 3}
+    Volume: 0.75
+    UsRandomPitch: 0
+    MinPitch: 0.9
+    MaxPitch: 1.1
+  _footStep:
+    AudioClips:
+    - {fileID: 8300000, guid: df7087e4d8a8bb546bc08ce68632903f, type: 3}
+    Volume: 0.1
+    UsRandomPitch: 0
+    MinPitch: 0.9
+    MaxPitch: 1.1
+  _footStepDuration: 0.3

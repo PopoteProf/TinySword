@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 555004315976017305}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36,6 +36,7 @@ Transform:
   - {fileID: 5003046465235912206}
   - {fileID: 3939327890332522173}
   - {fileID: 590602782654121821}
+  - {fileID: 9145606421198305839}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3231268556743075142
@@ -57,7 +58,7 @@ MonoBehaviour:
   _animator: {fileID: 3951716301572637958}
   _spriteRenderer: {fileID: 2519332365787888893}
   _health: 10
-  _maxHealt: 4
+  _maxHealt: 10
   _prfDeathParticule: {fileID: 3653049101328913050, guid: e30f5e65452301644a6b2161c703b3ac, type: 3}
   _attackDamage: 2
   _attackForcePower: 50
@@ -238,6 +239,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -259,6 +262,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -377,6 +381,85 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0.5}
   m_Radius: 1.52
+--- !u!1 &4210777313730712037
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9145606421198305839}
+  - component: {fileID: 6640245686815301285}
+  m_Layer: 0
+  m_Name: AudioPart
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9145606421198305839
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4210777313730712037}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2163440736567908077}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6640245686815301285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4210777313730712037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 663b3b4bec1544ae9e15e36aefec37e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerController: {fileID: 3231268556743075142}
+  _sfxAudioMixer: {fileID: -8239953488597329077, guid: 6b0ec3a830be9c747bc0ed5e70771e90, type: 2}
+  _attack:
+    AudioClips:
+    - {fileID: 8300000, guid: 93f95477df44d1345afaa71119b722e4, type: 3}
+    - {fileID: 8300000, guid: 0fd1434b5ff5a3940bc61aca11341602, type: 3}
+    - {fileID: 8300000, guid: 2571cb72477f1074f83d542facdb7580, type: 3}
+    - {fileID: 8300000, guid: ba6dee5489f64a148979243278f353d8, type: 3}
+    - {fileID: 8300000, guid: b4f1d18a8c1209844be39f588ab64f1d, type: 3}
+    Volume: 0.75
+    UsRandomPitch: 0
+    MinPitch: 0.9
+    MaxPitch: 1.1
+  _damaged:
+    AudioClips:
+    - {fileID: 8300000, guid: fd25a15f9797641458336cccfb445343, type: 3}
+    Volume: 0.75
+    UsRandomPitch: 0
+    MinPitch: 0.9
+    MaxPitch: 1.1
+  _kill:
+    AudioClips:
+    - {fileID: 8300000, guid: 566d2ea6240b489479a6e9fd608c2621, type: 3}
+    Volume: 0.75
+    UsRandomPitch: 0
+    MinPitch: 0.9
+    MaxPitch: 1.1
+  _footStep:
+    AudioClips:
+    - {fileID: 8300000, guid: df7087e4d8a8bb546bc08ce68632903f, type: 3}
+    Volume: 0.5
+    UsRandomPitch: 0
+    MinPitch: 0.9
+    MaxPitch: 1.1
+  _footStepDuration: 0.25
 --- !u!1 &6338955764066032425
 GameObject:
   m_ObjectHideFlags: 0

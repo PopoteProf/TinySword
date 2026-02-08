@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &518926753091827084
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5285824710089072992}
+  - component: {fileID: 7401108994370673765}
+  m_Layer: 0
+  m_Name: NavGridManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5285824710089072992
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 518926753091827084}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.782503, y: 1.3236864, z: 0.017349776}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7401108994370673765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 518926753091827084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 645e8a925400c764fa1f89a8b6256861, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gridSize: {x: 53, y: 47}
+  _gridOffset: {x: -20, y: -4}
+  _colliderMap: {fileID: 0}
+  _castSizeForDestrucible: {x: 0.5, y: 0.5}
+  _destructibleTag: Destroyable
+  _debugMap: {fileID: 0}
+  _greenDebugTile: {fileID: 11400000, guid: d91f500cd3e589343981098d1bb38c72, type: 2}
+  _debugRedTile: {fileID: 11400000, guid: e186546cb2bebd34eafa5186f30c2722, type: 2}
+  _debugblueTile: {fileID: 11400000, guid: 0d0daa111ad7d7d4ab6b0278c7c57ff4, type: 2}
+  _debugPinkTile: {fileID: 11400000, guid: c390030962fbc58439aca5679532eec5, type: 2}

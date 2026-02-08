@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f33edb0f8d4e4fa8bb44fd41ae2807aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _projectileSpeed: 5
+  _projectileSpeed: 20
   _sizeOverLifeTime:
     serializedVersion: 2
     m_Curve:

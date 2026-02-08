@@ -1,5 +1,88 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &63900182095955490
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4726811270249184924}
+  - component: {fileID: 6748117839270239557}
+  m_Layer: 0
+  m_Name: EnnemiAudioPart
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4726811270249184924
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63900182095955490}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9025309629460014554}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6748117839270239557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63900182095955490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dec059838382414b94a298b28a34dcbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ennemi: {fileID: 841986451195125873}
+  _targetRender: {fileID: 920566171304456148}
+  _sfxAudioMixer: {fileID: -8239953488597329077, guid: 6b0ec3a830be9c747bc0ed5e70771e90, type: 2}
+  _attack:
+    AudioClips:
+    - {fileID: 8300000, guid: 88b1cbe3caa3fee4b8b103b5edd7aba9, type: 3}
+    Volume: 0.75
+    UsRandomPitch: 0
+    MinPitch: 0.9
+    MaxPitch: 1.1
+  _damaged:
+    AudioClips:
+    - {fileID: 8300000, guid: 7c47b20bb9874304a809dc5580d403ba, type: 3}
+    Volume: 0.75
+    UsRandomPitch: 0
+    MinPitch: 0.9
+    MaxPitch: 1.1
+  _kill:
+    AudioClips:
+    - {fileID: 8300000, guid: 566d2ea6240b489479a6e9fd608c2621, type: 3}
+    Volume: 0.75
+    UsRandomPitch: 0
+    MinPitch: 0.9
+    MaxPitch: 1.1
+  _trigger:
+    AudioClips:
+    - {fileID: 8300000, guid: 490bfbc72255342408984f60044487de, type: 3}
+    Volume: 0.75
+    UsRandomPitch: 0
+    MinPitch: 0.9
+    MaxPitch: 1.1
+  _footStep:
+    AudioClips:
+    - {fileID: 8300000, guid: df7087e4d8a8bb546bc08ce68632903f, type: 3}
+    Volume: 0.2
+    UsRandomPitch: 0
+    MinPitch: 0.9
+    MaxPitch: 1.1
+  _footStepDuration: 0.2
 --- !u!1 &1145922207242082563
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,6 +226,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 121205708938426665}
+  - {fileID: 4726811270249184924}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &841986451195125873
@@ -166,12 +250,13 @@ MonoBehaviour:
   _animator: {fileID: 5031535900603395548}
   _gridManager: {fileID: 0}
   _aggresionRange: 6
+  _maxAggressionRange: 12
   _chaseRangeRecalculPath: 1.5
   _attackTriggerRange: 1.3
   _attackDamage: 2
   _attackForcePower: 40
-  _attackTime: 0.6
-  _deplayBeforeDamage: 0.5
+  _attackTime: 0.8
+  _deplayBeforeDamage: 0.4
   _leftAttackBounds:
     m_Center: {x: 0.8, y: 0.2, z: 0}
     m_Extent: {x: 0.5, y: 1, z: 0}
