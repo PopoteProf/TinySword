@@ -19,3 +19,8 @@ MonoBehaviour:
   QuestTitle: "R\xE9soudre le probl\xE8me du pere turbateur"
   QuestDescription: "Je viens d'ariv\xE9 au village et je doi said\xE9 le pere turbateur
     et les gens du village."
+  Rewards:
+  - Type: 1
+    ResourceType: 0
+    ResourceAmount: 0
+    SoItem: {fileID: 11400000, guid: a90334e6d7e39744f9359e789a4f81c2, type: 2}

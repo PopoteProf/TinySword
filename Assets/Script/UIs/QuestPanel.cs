@@ -19,6 +19,11 @@ public class QuestPanel : MonoBehaviour
     [Space (5)]
     [SerializeField] private float _closeningAnimationTime = 0.25f;
     [SerializeField] private AnimationCurve _closingPivotanimationCurve  = AnimationCurve.EaseInOut(0,0,1,1);
+    [Space (5), Header("Audio")]
+    [SerializeField] private AudioElement _audioOnOpen;
+    [SerializeField] private AudioElement _audioOnClose;
+    [SerializeField] private AudioElement _audioOnrefuse;
+    
     
     private List<SOQuest> _quests= new List<SOQuest>();
     private int _currentQuestIndex;
@@ -93,7 +98,10 @@ public class QuestPanel : MonoBehaviour
     private void UIClickQuestLogButton() {
         if (_panelClose)
         {
-            if (_quests.Count == 0) return;
+            if (_quests.Count == 0) {
+                _audioOnrefuse.PlayAsSFX();
+                return;
+            }
             OpenPanel();
             
         }
@@ -105,12 +113,14 @@ public class QuestPanel : MonoBehaviour
     private void ClosePanel()
     {
         transform.GetComponent<RectTransform>().DOPivotX(1,_closeningAnimationTime).SetEase(_closingPivotanimationCurve);
+        _audioOnClose.PlayAsSFX();
         _panelClose = true;
     }
 
     private void OpenPanel()
     {
         transform.GetComponent<RectTransform>().DOPivotX(0,_openningAnimationTime).SetEase(_openingPivotanimationCurve);
+        _audioOnOpen.PlayAsSFX();
         _panelClose = false;
     }
 }

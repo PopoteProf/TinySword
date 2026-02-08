@@ -23,8 +23,4 @@ public class TestInteractor : MonoBehaviour, IInteractable
         Instantiate(_prfParticuleSistem, transform.position, Quaternion.identity);
         if( _destroyOnInteraction) OnInteractableAutoRemove?.Invoke(this, this);
     }
-
-    
-    
-    
 }

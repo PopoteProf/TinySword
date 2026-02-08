@@ -18,3 +18,12 @@ MonoBehaviour:
   CompletID: 3
   QuestTitle: "Aid\xE9 les fermier"
   QuestDescription: Je dois aller voir les fermier a l'Ouest du village.
+  Rewards:
+  - Type: 0
+    ResourceType: 0
+    ResourceAmount: 12
+    SoItem: {fileID: 0}
+  - Type: 0
+    ResourceType: 1
+    ResourceAmount: 7
+    SoItem: {fileID: 0}

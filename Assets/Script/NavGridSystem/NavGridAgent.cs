@@ -8,6 +8,8 @@ public class NavGridAgent : MonoBehaviour ,IDamagable
 {
 
 
+    public Action<bool> OnChangeWalkingStat;
+    public Action OnTakeDamage;
     public Action<NavGridAgent> OnKill;
     
     [SerializeField] private float _moveSpeedForce = 5;
@@ -72,8 +74,9 @@ public class NavGridAgent : MonoBehaviour ,IDamagable
         }
     }
 
-    protected virtual void ManagerVisual()
-    {
+    protected virtual void ManagerVisual() {
+        if( !_isMoving&&_rb.linearVelocity.magnitude > 0.2f) OnChangeWalkingStat?.Invoke(true);
+        if( _isMoving&&_rb.linearVelocity.magnitude <= 0.2f) OnChangeWalkingStat?.Invoke(false);
         _isMoving = _rb.linearVelocity.magnitude > 0.2f;
         _animator.SetBool("IsWalking",_isMoving);
         if (_rb.linearVelocity.magnitude > 0.2f)
@@ -134,8 +137,10 @@ public class NavGridAgent : MonoBehaviour ,IDamagable
         }
     }
 
-    
-    public virtual void TakeDamage(int damage, Vector2 direction, IDamagable.AttackerType attackerType) { }
+
+    public virtual void TakeDamage(int damage, Vector2 direction, IDamagable.AttackerType attackerType) {
+        OnTakeDamage?.Invoke();
+    }
     protected virtual void OnStartWalking() { }
     protected virtual void OnStopWalking() { }
 }

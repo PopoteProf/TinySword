@@ -7,6 +7,7 @@ public class SOQuest : ScriptableObject {
     public int CompletID;
     public string QuestTitle;
     [TextArea]public string QuestDescription;
+    public Reward[] Rewards;
 
     public bool IsCompleted() {
          return TriggerAndQuest.IsTriggered(CompletID);
@@ -18,5 +19,11 @@ public class SOQuest : ScriptableObject {
             if (!conditionTrigger.IsValid()) return false;
         }
         return true;
+    }
+
+    public void GiveRewards() {
+        foreach (var reward in Rewards) {
+            reward.GiveReward();
+        }
     }
 }

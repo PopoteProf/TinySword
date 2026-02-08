@@ -5,6 +5,9 @@ using Random = UnityEngine.Random;
 
 public class ArcherEnemy : NavGridAgent 
 {
+    public Action OnEnnemiTrigger;
+    public Action OnEnnemiAttack;
+    
     [SerializeField] private float _aggresionRange = 6;
     [SerializeField] private float _maxAggressionRange = 12;
     [SerializeField] private float _chaseRangeRecalculPath = 1.5f;
@@ -13,7 +16,7 @@ public class ArcherEnemy : NavGridAgent
     [Space(10), Header("Attacks")] 
     [SerializeField] private int _attackDamage = 2;
     [SerializeField] private float _attackTime =0.7f;
-    [Range(0, 1), SerializeField] private float _deplayBeforeFirering = 0.5f;
+    [SerializeField] private float _deplayBeforeFirering = 0.3f;
     [SerializeField] private BezierProjectile _prfBezierProjectile;
 
     [SerializeField] private Vector2 _leftProjecticleSpawn;
@@ -46,6 +49,7 @@ public class ArcherEnemy : NavGridAgent
     }
     private PopoteTimer _wonderingTimer;
     private PopoteTimer _attackTimer;
+    private PopoteTimer _delayBeforAttack;
     private PopoteTimer _damagedTimer;
     private bool _haveAttacked = false;
 
@@ -56,9 +60,13 @@ public class ArcherEnemy : NavGridAgent
         _damagedTimer.OnTimerEnd += OnTimerDamagedEnd;
         _attackTimer = new PopoteTimer(_attackTime);
         _attackTimer.OnTimerEnd+= OnTimerAttackEnd;
+        _delayBeforAttack = new PopoteTimer(_deplayBeforeFirering);
+        _delayBeforAttack.OnTimerEnd += FireArrow;
         base.Start();
     }
-    
+
+   
+
     protected override void Update() {
 
         switch (_ennemiStat)
@@ -77,6 +85,7 @@ public class ArcherEnemy : NavGridAgent
         if (IsFallBack) return;
         if (Vector2.Distance(StaticData.PlayerPos, transform.position) <= _aggresionRange) {
             _isTriggered = true;
+            OnEnnemiTrigger?.Invoke();
             SetNewDestination(StaticData.PlayerPos);
         }
         
@@ -121,6 +130,7 @@ public class ArcherEnemy : NavGridAgent
         if (_attackTimer.IsPlaying) return;
         if (_isFallBack) _isFallBack = false;
         ChangStatToIdle();
+        
     }
 
     private void ManageChase()
@@ -184,25 +194,33 @@ public class ArcherEnemy : NavGridAgent
             _ennemiStat = EnnemiStat.Attacking;
             _animator.SetTrigger("Attack");
             _attackTimer.Play();
+            _delayBeforAttack.Play();
         }
     }
 
     private void ManageAttackState() {
         _attackTimer.UpdateTimer();
+        _delayBeforAttack.UpdateTimer();
         _animator.SetBool("IsWalking",false);
-        if (_haveAttacked)return;
-        if (_attackTimer.T > _deplayBeforeFirering) {
-            if( _spriteRenderer.flipX)SpawnProjectile( (Vector2)transform.position+_rightProjecticleSpawn,(Vector2)transform.position+_rightProjecticleDirection);
-            else SpawnProjectile((Vector2)transform.position+_leftProjecticleSpawn, (Vector2)transform.position+_leftProjecticleDirection);
-            _haveAttacked = true;
-            
+       
+    }
+    private void FireArrow(object sender, EventArgs e) {
+        if (_spriteRenderer.flipX)
+        {
+            Debug.Log("Fire to the Right");
+            SpawnProjectile( (Vector2)transform.position+_rightProjecticleSpawn,_rightProjecticleDirection);
+        }
+        else
+        {
+            Debug.Log("Fire to the Left");
+            SpawnProjectile((Vector2)transform.position+_leftProjecticleSpawn, _leftProjecticleDirection);
         }
     }
 
-    private void SpawnProjectile(Vector2 startPos, Vector2 direction)
-    {
+    private void SpawnProjectile(Vector2 startPos, Vector2 direction) {
         BezierProjectile projectile = Instantiate(_prfBezierProjectile,  startPos, Quaternion.identity);
-        projectile.SetUpBezierProjectile(startPos,direction, StaticData.PlayerPos);
+        projectile.SetUpBezierProjectile(startPos,direction.normalized, StaticData.PlayerPos);
+        OnEnnemiAttack?.Invoke();
             
     }
     //private void MakeDamage(Bounds bound) {

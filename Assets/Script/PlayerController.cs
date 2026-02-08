@@ -5,9 +5,11 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour, IDamagable {
-    
-    public Action<IDamagable> OnKill { get; }
-    
+    public Action OnAttack;
+    public Action OnDamaged;
+    public Action<bool> OnWalkingChangeStat;
+    public Action<IDamagable> OnDie;
+
     [SerializeField] private PlayerInteractor _playerInteractor;
     [Space(5)]
     [SerializeField] private bool _controlBlock;
@@ -90,7 +92,7 @@ public class PlayerController : MonoBehaviour, IDamagable {
         _damagedTimer = new PopoteTimer(_damageTime);
         
         
-        StaticData.PlayerHealthChanged.Invoke(NormalizeHealth);
+        StaticData.PlayerHealthChanged?.Invoke(NormalizeHealth);
     }
 
     
@@ -135,6 +137,7 @@ public class PlayerController : MonoBehaviour, IDamagable {
     }
 
     private void MakeDamage(Bounds bound) {
+        OnAttack?.Invoke();
         RaycastHit2D[] hit2Ds= Physics2D.BoxCastAll(transform.position + bound.center, bound.size, 0, Vector2.zero);
         foreach (var hit in hit2Ds)
         {
@@ -174,6 +177,8 @@ public class PlayerController : MonoBehaviour, IDamagable {
     }
     
     protected virtual void ManagerVisual() {
+        if( !_isMoving &&_rb.linearVelocity.magnitude > 0.2f) OnWalkingChangeStat?.Invoke(true);
+        if (_isMoving &&_rb.linearVelocity.magnitude <= 0.2f )OnWalkingChangeStat?.Invoke(false);
         _isMoving = _rb.linearVelocity.magnitude > 0.2f;
         _animator.SetBool("IsWalking",_isMoving);
         if (_rb.linearVelocity.magnitude > 0.2f) {
@@ -193,6 +198,7 @@ public class PlayerController : MonoBehaviour, IDamagable {
     public void TakeDamage(int damage, Vector2 direction, IDamagable.AttackerType attackerType)
     {
         if (_damagedImpulceSource)_damagedImpulceSource.GenerateImpulse();
+        OnDamaged?.Invoke();
         _rb.AddForce(direction, ForceMode2D.Force);
         _damagedTimer.Play();
         _health -= damage;
@@ -205,6 +211,7 @@ public class PlayerController : MonoBehaviour, IDamagable {
     }
     private void Die(){
         Instantiate(_prfDeathParticule, transform.position, Quaternion.identity);
+        OnDie?.Invoke(this);
         Destroy(gameObject);
     }
 

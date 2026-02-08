@@ -39,6 +39,4 @@ public class HealthBar : MonoBehaviour
             _imgFollowBar.fillAmount= Mathf.Lerp(_startingHealth, _targetHealth,_FollowBarChangeCurve.Evaluate(_changeTimer.T));
         }
     }
-    
-    
 }

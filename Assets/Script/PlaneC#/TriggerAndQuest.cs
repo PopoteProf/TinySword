@@ -38,7 +38,10 @@ public static class TriggerAndQuest {
             }
         }
         foreach (var quest in _soTriggerAndQuest.Quests) {
-            if( quest.CompletID == id) OnQuestEnd?.Invoke(quest);
+            if (quest.CompletID == id) {
+                OnQuestEnd?.Invoke(quest);
+                quest.GiveRewards();
+            }
         }
         
     }

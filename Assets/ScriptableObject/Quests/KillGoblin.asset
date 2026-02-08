@@ -19,3 +19,4 @@ MonoBehaviour:
   QuestTitle: Tuer les Goblin
   QuestDescription: "Je dois me rendre sur l'\xEEle des goblins au nord, traverse
     le pont et me d\xE9barasser de tout ces vermines"
+  Rewards: []
