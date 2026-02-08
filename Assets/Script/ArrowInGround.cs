@@ -4,15 +4,15 @@ using UnityEngine;
 public class ArrowInGround : MonoBehaviour
 {
     
-    [SerializeField] private SpriteRenderer _spriteRenderer;
-    [SerializeField] private AnimationCurve _animationCurve = new AnimationCurve();
-    [SerializeField] private float _animationZAmplitude = 10;
-    [SerializeField] private float _animationTime = 0.5f;
-    [SerializeField] private float _postAnimationLifeTime = 5;
-    [SerializeField] private AnimationCurve _posAnimationAlpha = new AnimationCurve();
-    private PopoteTimer _animationTimer;
-    private PopoteTimer _postAnimationTimer;
-    private float _zRotPos; 
+    [SerializeField] protected SpriteRenderer _spriteRenderer;
+    [SerializeField] protected AnimationCurve _animationCurve = new AnimationCurve();
+    [SerializeField] protected float _animationZAmplitude = 10;
+    [SerializeField] protected float _animationTime = 0.5f;
+    [SerializeField] protected float _postAnimationLifeTime = 5;
+    [SerializeField] protected AnimationCurve _posAnimationAlpha = new AnimationCurve();
+    protected PopoteTimer _animationTimer;
+    protected PopoteTimer _postAnimationTimer;
+    protected float _zRotPos; 
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
@@ -26,10 +26,10 @@ public class ArrowInGround : MonoBehaviour
         _zRotPos = transform.eulerAngles.z;
     }
 
-    private void OnAnimationTimerEnd(object sender, EventArgs e) {
+    protected virtual void OnAnimationTimerEnd(object sender, EventArgs e) {
         _postAnimationTimer.Play();
     }
-    private void OnPostAnimTimerEnd(object sender, EventArgs e) {
+    protected virtual void OnPostAnimTimerEnd(object sender, EventArgs e) {
        Destroy(gameObject);
     }
 
@@ -43,12 +43,12 @@ public class ArrowInGround : MonoBehaviour
         if( _postAnimationTimer.IsPlaying)ManagerPostAnimation();
     }
 
-    private void ManagerAnimation() {
+    protected virtual void ManagerAnimation() {
         float z = _zRotPos+_animationZAmplitude*_animationCurve.Evaluate(_animationTimer.T);
         transform.eulerAngles = new Vector3(0f, 0f,z );
     }
 
-    private void ManagerPostAnimation()
+    protected virtual void ManagerPostAnimation()
     {
         _spriteRenderer.color = new Color(1,1,1,_posAnimationAlpha.Evaluate(_postAnimationTimer.T));
     }

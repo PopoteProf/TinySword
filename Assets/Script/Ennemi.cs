@@ -7,7 +7,8 @@ using Random = UnityEngine.Random;
 
 public class Ennemi : NavGridAgent
 {
-    
+    public Action OnEnnemiTrigger;
+    public Action OnEnnemiAttack;
     
     [SerializeField] private float _aggresionRange = 6;
     [SerializeField] private float _maxAggressionRange = 12;
@@ -18,7 +19,7 @@ public class Ennemi : NavGridAgent
     [SerializeField] private int _attackDamage = 2;
     [SerializeField] private float _attackForcePower =10;
     [SerializeField] private float _attackTime =0.7f;
-    [Range(0, 1), SerializeField] private float _deplayBeforeDamage = 0.5f;
+    [SerializeField] private float _deplayBeforeDamage = 0.3f;
     [SerializeField] private Bounds _leftAttackBounds;
     [SerializeField] private Bounds _rightAttackBounds;
     [Header("Health")]
@@ -42,8 +43,8 @@ public class Ennemi : NavGridAgent
     }
     private PopoteTimer _wonderingTimer;
     private PopoteTimer _attackTimer;
+    private PopoteTimer _dealyBeforeDamage;
     private PopoteTimer _damagedTimer;
-    private bool _haveAttacked = false;
 
     protected override void Start() {
         _wonderingTimer = new PopoteTimer(Random.Range(_minWaitTime, _maxWaitTime));
@@ -52,9 +53,13 @@ public class Ennemi : NavGridAgent
         _damagedTimer.OnTimerEnd += OnTimerDamagedEnd;
         _attackTimer = new PopoteTimer(_attackTime);
         _attackTimer.OnTimerEnd+= OnTimerAttackEnd;
+        _dealyBeforeDamage = new PopoteTimer(_deplayBeforeDamage);
+        _dealyBeforeDamage.OnTimerEnd+= MakeAttackDamage;
         base.Start();
     }
+
     
+
     protected override void Update() {
 
         switch (_ennemiStat)
@@ -71,6 +76,7 @@ public class Ennemi : NavGridAgent
     private void CheckIfPlayerInAgroRange() {
         if (IsFallBack) return;
         if (Vector2.Distance(StaticData.PlayerPos, transform.position) <= _aggresionRange) {
+            if (!_isTriggered)OnEnnemiTrigger?.Invoke();
             _isTriggered = true;
             SetNewDestination(StaticData.PlayerPos);
         }
@@ -179,19 +185,21 @@ public class Ennemi : NavGridAgent
             _ennemiStat = EnnemiStat.Attacking;
             _animator.SetTrigger("Attack");
             _attackTimer.Play();
+            _dealyBeforeDamage.Play();
         }
     }
 
     private void ManageAttackState() {
         _attackTimer.UpdateTimer();
-        if (_haveAttacked)return;
-        if (_attackTimer.T > _deplayBeforeDamage) {
-            _haveAttacked = true;
-            if( _spriteRenderer.flipX)MakeDamage(_rightAttackBounds);
-            else MakeDamage(_leftAttackBounds);
-        }
+        _dealyBeforeDamage.UpdateTimer();
+    }
+    
+    private void MakeAttackDamage(object sender, EventArgs e) {
+        if( _spriteRenderer.flipX)MakeDamage(_rightAttackBounds);
+        else MakeDamage(_leftAttackBounds);
     }
     private void MakeDamage(Bounds bound) {
+        OnEnnemiAttack?.Invoke();
         RaycastHit2D[] hit2Ds= Physics2D.BoxCastAll(transform.position + bound.center, bound.size, 0, Vector2.zero);
         foreach (var hit in hit2Ds) {
             if (hit.collider.gameObject == gameObject) continue;
@@ -202,10 +210,7 @@ public class Ennemi : NavGridAgent
             }
         }
     }
-    private void OnTimerAttackEnd(object sender, EventArgs e)
-    {
-        Debug.Log("Finish attack");
-        _haveAttacked = false;
+    private void OnTimerAttackEnd(object sender, EventArgs e) {
         ChangStatToIdle();
     }
 

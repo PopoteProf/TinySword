@@ -14,7 +14,8 @@ public class NavGridManager : MonoBehaviour
     [SerializeField] private Vector2 _castSizeForDestrucible = new Vector2(0.5f,0.5f);
     [SerializeField] private string _destructibleTag = "Destructible";
 
-    [Space(10), Header("Debug")]
+    [Space(10), Header("Debug")] 
+    [SerializeField] private bool _usDebug;
     [SerializeField] private Tilemap _debugMap;
     [SerializeField] private Tile _greenDebugTile;
     [SerializeField] private Tile _debugRedTile = null;
@@ -211,6 +212,7 @@ public class NavGridManager : MonoBehaviour
     }
 
     private void DisplayDebugGrid() {
+        if (_debugMap == null|| !_usDebug) return;
         for (int x = 0; x < _gridSize.x; x++) {
             for (int y = 0; y < _gridSize.y; y++) {
                 if (_grid[x,y].IsBlockade)DisplayDebugTile(_grid[x,y], _debugPinkTile);

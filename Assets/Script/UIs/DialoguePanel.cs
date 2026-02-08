@@ -15,11 +15,15 @@ public class DialoguePanel : MonoBehaviour {
     [Header("Tweening")]
     [SerializeField] private float _openningAnimationTime = 0.75f;
     [SerializeField] private AnimationCurve _openingPivotanimationCurve  = AnimationCurve.EaseInOut(0,0,1,1);
-    [SerializeField] private AnimationCurve _openingScaltanimationCurve  = AnimationCurve.EaseInOut(0,0,1,1);
     [Space (5)]
     [SerializeField] private float _closeningAnimationTime = 0.25f;
     [SerializeField] private AnimationCurve _closingPivotanimationCurve  = AnimationCurve.EaseInOut(0,0,1,1);
-    [SerializeField] private AnimationCurve _closingScaltanimationCurve  = AnimationCurve.EaseInOut(0,0,1,1);
+    
+    [Space (5), Header("Audio")]
+    [SerializeField] private AudioElement _audioOnOpen;
+    [SerializeField] private AudioElement _audioOnClose;
+    [SerializeField] private AudioElement _audioNextDialogue;
+    [SerializeField] private AudioElement _audioLettreDisplay;
     private int _currentIndex;
     private PopoteTimer _textTimer;
     private bool _isInDialogue;
@@ -42,6 +46,7 @@ public class DialoguePanel : MonoBehaviour {
 
     private void OnButtonInteractstarted(InputAction.CallbackContext obj) {
         if( !_isInDialogue) return;
+        _audioNextDialogue.PlayAsSFX();
         if (_textTimer.IsPlaying)CompletCurrentDialogueElement();
         else NextDialogueElement();
     }
@@ -98,9 +103,11 @@ public class DialoguePanel : MonoBehaviour {
     private void ManagerTextDisplay() {
         _txtDialogue.maxVisibleCharacters =Mathf.RoundToInt(
             _currentDialogueData.DialoguePanels[_currentIndex].Text.Length * _textTimer.T);
+        
     }
 
     public void OpenPanel() {
+        _audioOnOpen.PlayAsSFX();
         _holderPanel.anchoredPosition = new Vector2(0.5f, 1.5f);
         //_holderPanel.localScale = new Vector3(1, 0);
         _holderPanel.DOPivot(new Vector2(0.5f, 0), _openningAnimationTime).SetEase(_openingPivotanimationCurve);
@@ -108,6 +115,7 @@ public class DialoguePanel : MonoBehaviour {
         _isInDialogue = true;
     }
     private void ClosePanel() {
+        _audioOnClose.PlayAsSFX();
         _holderPanel.anchoredPosition = new Vector2(0.5f, 0);
         //_holderPanel.localScale = new Vector3(1, 1);
         _holderPanel.DOPivot(new Vector2(0.5f, 1.5f), _closeningAnimationTime).SetEase(_closingPivotanimationCurve);

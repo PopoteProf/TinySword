@@ -28,6 +28,8 @@ MonoBehaviour:
     Ressource: 0
     Comparator: 0
     RessourceValue: 0
+    SoItem: {fileID: 0}
+    ObjectComparator: 0
   UsCompletID: 1
   CompletID: 5
   ChangeTriggerIndexOnComplet: 1

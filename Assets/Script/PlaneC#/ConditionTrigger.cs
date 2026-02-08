@@ -3,13 +3,19 @@ using System;
 [Serializable]
 public struct ConditionTrigger {
    public enum ConditionType {
-      TriggerID,Ressourses
+      TriggerID,Ressourses,Object
    }
    public enum ComparatorType {
       Greater,
       Less,
       Equal,
       NotEqual
+   }
+
+   public enum ObjectComparatorType
+   {
+      Have,
+      DontHave
    }
    
    public ConditionType Type;
@@ -20,6 +26,9 @@ public struct ConditionTrigger {
    public StaticData.RessourcesType Ressource;
    public ComparatorType Comparator;
    public int RessourceValue;
+
+   public SOItem SoItem;
+   public ObjectComparatorType ObjectComparator;
 
    public bool IsValide() {
       if (Type == ConditionType.TriggerID) {
@@ -34,6 +43,11 @@ public struct ConditionTrigger {
             default:
                throw new ArgumentOutOfRangeException();
          }
+      }
+
+      if (Type == ConditionType.Object) {
+         if (ObjectComparator == ObjectComparatorType.Have) return StaticData._inventory.Contains(SoItem);
+         return !StaticData._inventory.Contains(SoItem);
       }
       return false;
    }
