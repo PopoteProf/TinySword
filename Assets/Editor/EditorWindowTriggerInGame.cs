@@ -18,11 +18,19 @@ public class EditorWindowTriggerInGame : EditorWindow
             }
 
             scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
-            for (int i = 0; i < TriggerAndQuest.SoTriggerIdsAndQuest.Triggers.Length; i++) {
-                DisplayTrigger(i);
+            if (TriggerAndQuest.SoTriggerIdsAndQuest != null)
+            {
+                for (int i = 0; i < TriggerAndQuest.SoTriggerIdsAndQuest.Triggers.Length; i++)
+                {
+                    DisplayTrigger(i);
+                }
+
+                EditorGUILayout.EndScrollView();
             }
-            EditorGUILayout.EndScrollView();
-            
+            else
+            {
+                EditorGUILayout.LabelField("No Sotrigger and quest data fount");
+            }
         }
         else
         {

@@ -90,22 +90,29 @@ public class EditorWindowSoTrigerIdAndQuest : EditorWindow {
             EditorGUILayout.PropertyField(so.FindProperty("QuestTitle"),true);
             EditorGUILayout.PropertyField(so.FindProperty("QuestDescription"),true);
             GUILayout.BeginHorizontal();
-            EditorGUILayout.PropertyField(so.FindProperty("Triggers"),true);
+            GUILayout.BeginVertical();
             EditorGUILayout.PropertyField(so.FindProperty("CompletID"),true);
+            EditorGUILayout.PropertyField(so.FindProperty("Triggers"),true);
+            GUILayout.EndVertical();
+            EditorGUILayout.PropertyField(so.FindProperty("Rewards"),true);
             so.ApplyModifiedProperties();
             GUILayout.EndHorizontal();
         }
     }
 
-    private int GetAdditionalQuestTriggerHeight() {
+    private int GetAdditionalQuestTriggerHeight()
+    {
+        int questHeight;
+        int rewardHeight;
         if (_data.Quests.Length == 0 || _selectedQuestId < 0 || _selectedQuestId >= _data.Quests.Length ||
             _data.Quests[_selectedQuestId] == null)
         {
-            return 0;
+            return 25;
         }
-        else
-        {
-            return _data.Quests[_selectedQuestId].Triggers.Length * 22;
+        else {
+            questHeight= _data.Quests[_selectedQuestId].Triggers.Length * 22+25;
+            rewardHeight = _data.Quests[_selectedQuestId].Rewards.Length * 22+5;
+            return Mathf.Max(questHeight, rewardHeight);
         }
     }
 }
