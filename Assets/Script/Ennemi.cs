@@ -87,7 +87,6 @@ public class Ennemi : NavGridAgent
 
     
     private void ChangStatToIdle() {
-        Debug.Log("Idle");
         _wonderingTimer.Play(Random.Range(_minWaitTime, _maxWaitTime));
         _ennemiStat = EnnemiStat.Idle;
     }
@@ -110,7 +109,6 @@ public class Ennemi : NavGridAgent
     }
 
     private void ManageWalkState() {
-        Debug.Log("Walk");
         ManageLocomotion();
         if( !_isTriggered)CheckIfPlayerInAgroRange();
         else ManageChase();
@@ -206,6 +204,7 @@ public class Ennemi : NavGridAgent
             if (hit.collider.GetComponent<IDamagable>()!=null) {
                 Vector2 dir = hit.collider.transform.position - transform.position;
                 dir.Normalize();
+                Debug.Log(hit.collider.GetComponent<IDamagable>() != null);
                 hit.collider.GetComponent<IDamagable>().TakeDamage(_attackDamage,dir*_attackForcePower, IDamagable.AttackerType.Player );
             }
         }
