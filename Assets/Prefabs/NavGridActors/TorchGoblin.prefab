@@ -136,6 +136,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -157,6 +159,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -205,6 +208,7 @@ GameObject:
   - component: {fileID: 841986451195125873}
   - component: {fileID: 2173146359699798451}
   - component: {fileID: 6897575850118332894}
+  - component: {fileID: 7800139394434643627}
   m_Layer: 0
   m_Name: TorchGoblin
   m_TagString: Untagged
@@ -383,3 +387,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &7800139394434643627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3936668152680136684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 645e8a925400c764fa1f89a8b6256861, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NavGridManager
+  _gridSize: {x: 10, y: 10}
+  _gridOffset: {x: -2, y: -2}
+  _colliderMap: {fileID: 0}
+  _castSizeForDestrucible: {x: 0.5, y: 0.5}
+  _destructibleTag: Destructible
+  _usDebug: 0
+  _debugMap: {fileID: 0}
+  _greenDebugTile: {fileID: 11400000, guid: d91f500cd3e589343981098d1bb38c72, type: 2}
+  _debugRedTile: {fileID: 11400000, guid: c390030962fbc58439aca5679532eec5, type: 2}
+  _debugblueTile: {fileID: 11400000, guid: 0d0daa111ad7d7d4ab6b0278c7c57ff4, type: 2}
+  _debugPinkTile: {fileID: 11400000, guid: e186546cb2bebd34eafa5186f30c2722, type: 2}
