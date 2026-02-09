@@ -49,6 +49,7 @@ MonoBehaviour:
   _colliderMap: {fileID: 0}
   _castSizeForDestrucible: {x: 0.5, y: 0.5}
   _destructibleTag: Destroyable
+  _usDebug: 0
   _debugMap: {fileID: 0}
   _greenDebugTile: {fileID: 11400000, guid: d91f500cd3e589343981098d1bb38c72, type: 2}
   _debugRedTile: {fileID: 11400000, guid: e186546cb2bebd34eafa5186f30c2722, type: 2}
